@@ -1,8 +1,8 @@
 // @flow
 
-import { arrayOfAlbums, album } from './schemas'
+import { arrayOfAlbums } from './schemas'
 import { API_ROOT, ALBUMS } from '../constants/routes'
-import type { Dispatch } from '../constants/ActionTypes'
+import type { Dispatch, ThunkAction } from '../constants/ActionTypes'
 import { normalize } from 'normalizr'
 import { v4 } from 'uuid'
 
@@ -40,11 +40,12 @@ export const toggleAddAlbumForm = (): Function => (dispatch, getState) =>  {
   })
 }
 
-export const addAlbum = (props: { title: string }): Function => (dispatch, getState) => {
+export const addAlbum = (props: { title: string }): ThunkAction => (dispatch, getState)  => {
   const newAlbum = { id: v4(), title: props.title }
-
+  
   dispatch({
     type: 'ADD_ALBUM_SUCCESS',
-    response: newAlbum
+    response: newAlbum,
+    successMessage: 'Album har lagts till'
   })
 }

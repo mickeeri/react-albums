@@ -26,7 +26,6 @@ const ids = (state = List([]), action: Action) => {
     case 'FETCH_ALBUMS_SUCCESS':
       return List(action.response.result)
     case 'ADD_ALBUM_SUCCESS':
-      console.log('action response', action.response.id)
       return state.insert(0, action.response.id)    
     default:
       return state

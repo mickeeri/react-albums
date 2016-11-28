@@ -38,12 +38,33 @@ body {
   margin-top: 5px;
 }
 
-.ErrorMessage {
-  border: 1px solid #e53935;
+.AlertMessage {
   padding: 15px;
-  background-color: #ffebee;
-  border-radius: 5px;
   margin: 20px 0;
+  border-radius: 5px
+}
+
+.AlertMessage .fa {
+  font-size: 20px;
+  margin-right: 4px;
+}
+
+.AlertMessage.success {
+  border: 1px solid #689f38;
+  background-color: #f1f8e9;
+}
+
+.AlertMessage.success .fa {
+  color: #689f38;
+}
+
+.AlertMessage.error .fa {
+  color: #e53935;
+}
+
+.AlertMessage.error {
+  border: 1px solid #e53935;
+  background-color: #ffebee;
 }
 
 .Loader {

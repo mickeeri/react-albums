@@ -9,6 +9,7 @@ export type State = {
   albums: AlbumState,
   errorMessage: string,
   isFetching: boolean,
+  successMessage: string,
 }
 
 const errorMessage = (state = null, action: Action) => {
@@ -23,8 +24,17 @@ const isFetching = (state = false, action: Action) => {
   return action.type === 'FETCHING_DATA'
 }
 
+const successMessage = (state = null, action: Action) => {
+  if (action.type === 'RESET_SUCCESS_MESSAGE') {
+    return null
+  } else {
+    return action.successMessage || state
+  }
+}
+
 export default combineReducers({
   albums: albumsReducer,
   errorMessage,
   isFetching,
+  successMessage,
 })

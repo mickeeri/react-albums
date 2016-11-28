@@ -36,7 +36,7 @@ class AlbumsContainer extends Component {
           <button disabled={isFetching} onClick={this.handleOnUpdate}>
             Update album list
           </button>
-          <button disabled={isFetching} onClick={this.handleOnToggleAddForm}>
+          <button disabled={isFetching || displayForm} onClick={this.handleOnToggleAddForm}>
             Add new album
           </button>
         </div>
@@ -44,7 +44,8 @@ class AlbumsContainer extends Component {
           albums={albums} 
           isFetching={isFetching} 
           displayForm={displayForm} 
-          onAddAlbum={this.handleOnAddAlbum}
+          addAlbum={this.handleOnAddAlbum}
+          toggleForm={this.handleOnToggleAddForm}
         />
       </div>
     )

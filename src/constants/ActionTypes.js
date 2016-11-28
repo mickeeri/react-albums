@@ -7,7 +7,8 @@ export type Action =
   | { type: 'RESET_ERROR_MESSAGE' }
   | { type: 'FETCHING_DATA', typeOfData: string }
   | { type: 'TOOGLE_ADD_ALBUM_FORM', display: boolean }
-  | { type: 'ADD_ALBUM_SUCCESS', response: Object }
+  | { type: 'ADD_ALBUM_SUCCESS', response: Object, successMessage: string }
+  | { type: 'RESET_SUCCESS_MESSAGE' }
 
 export type Dispatch = (action: Action | ThunkAction | PromiseAction | Array<Action>) => any;
 export type GetState = () => Object;
