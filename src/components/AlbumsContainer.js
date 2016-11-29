@@ -18,7 +18,8 @@ class AlbumsContainer extends Component {
   }
 
   handleOnToggleAddForm = (): void => {
-    this.props.toggleAddAlbumForm()
+    const { displayForm, toggleAddAlbumForm } = this.props
+    toggleAddAlbumForm(!displayForm)
   }
 
   handleOnAddAlbum = (formProps): void => {

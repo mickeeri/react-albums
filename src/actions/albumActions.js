@@ -2,42 +2,56 @@
 
 import { arrayOfAlbums } from './schemas'
 import { API_ROOT, ALBUMS } from '../constants/routes'
-import type { Dispatch, ThunkAction } from '../constants/ActionTypes'
+import type { Dispatch, ThunkAction, ActionCreator } from '../constants/ActionTypes'
 import { normalize } from 'normalizr'
 import { v4 } from 'uuid'
+import fetch from 'isomorphic-fetch';
 
-export const fetchAlbums = () => (dispatch: Dispatch) => {
-  dispatch({ type: 'FETCHING_DATA', typeOfData: 'albums' })
-
-  return fetch(`${API_ROOT}${ALBUMS}`).then((response: Object) => {
-    if (response.ok) {
-      response.json().then((albums) => {
-        dispatch({
-          type: 'FETCH_ALBUMS_SUCCESS',
-          response: normalize(albums, arrayOfAlbums),
-        })
-      })
-    } else {
-      dispatch({
-        type: 'NETWORK_ERROR',
-        errorMessage: response.error,
-      })
-    }
-  })
-  .catch(error => {
-    // Error with my code.
-    dispatch({
-      type: 'FETCH_ERROR',
-      errorMessage: error.message,
-    })
-  })
+function fetchAlbumsSuccess(albums) {
+  return {
+    type: 'FETCH_ALBUMS_SUCCESS',
+    response: normalize(albums, arrayOfAlbums),
+  }
 }
 
-export const toggleAddAlbumForm = (): Function => (dispatch, getState) =>  { 
-  dispatch({
+function fetchAlbumsNetworkFailure(errorMessage) {
+  return {
+    type: 'NETWORK_ERROR',
+    errorMessage,
+  }
+}
+
+function fetchAlbumsException(ex) {
+  return {
+    type: 'FETCH_ERROR',
+    errorMessage: ex || 'An error occured when fetching albums',
+  }
+}
+
+export const fetchAlbums = (): ThunkAction => (dispatch, getStore) => {
+  if (getStore().isFetching) {
+    return Promise.resolve()
+  }
+
+  dispatch({ type: 'FETCHING_DATA', typeOfData: 'albums' })
+
+  return fetch(`${API_ROOT}${ALBUMS}`)
+    .then(res => res.json())
+    .then(json => {
+      if (json.error) {
+        dispatch(fetchAlbumsNetworkFailure(json.error))
+      } else {
+        dispatch(fetchAlbumsSuccess(json))        
+      }
+    })
+    .catch(ex => dispatch(fetchAlbumsException(ex)))
+}
+
+export const toggleAddAlbumForm = (display: boolean) => { 
+  return {
     type: 'TOGGLE_ADD_ALBUM_FORM',
-    display: !getState().albums.displayForm,    
-  })
+    display,    
+  }
 }
 
 export const addAlbum = (props: { title: string }): ThunkAction => (dispatch, getState)  => {
