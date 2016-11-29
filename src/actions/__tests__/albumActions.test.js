@@ -4,11 +4,12 @@ import store from '../../store/mockStore'
 import nock from 'nock'
 import { normalize } from 'normalizr'
 import { arrayOfAlbums } from '../schemas'
+import type { Action} from '../../constants/ActionTypes'
 
 describe('toggleAddAlbumForm', () => {
   it('should return the passed along display value', () => {
-    const expectedAction = {
-      type: 'TOGGLE_ADD_ALBUM_FORM',
+    const expectedAction: Action = {
+      type: 'TOOGLE_ADD_ALBUM_FORM',
       display: true
     }
     expect(actions.toggleAddAlbumForm(true)).toEqual(expectedAction)
@@ -31,7 +32,7 @@ describe('fetchAlbums', () => {
       .get(ALBUMS)
       .reply(200, responseBody)
     
-    const expectedActions = [
+    const expectedActions: Array<Action> = [
       {type: 'FETCHING_DATA', typeOfData: 'albums'},
       {type: 'FETCH_ALBUMS_SUCCESS', response: normalize(responseBody, arrayOfAlbums)}
     ]
@@ -45,14 +46,23 @@ describe('fetchAlbums', () => {
       .get(ALBUMS)
       .reply(500, { error: 'Internal server error'})
     
-    const expectedActions = [
+    const expectedActions: Array<Action> = [
       {type: 'FETCHING_DATA', typeOfData: 'albums'},
       {type: 'NETWORK_ERROR', errorMessage: 'Internal server error'}
     ]
 
     return store.dispatch(actions.fetchAlbums())
-      .then((res) => {
+      .then(() => {
         expect(store.getActions()).toEqual(expectedActions)
       })
   })  
+})
+
+describe('addAlbum', () => {
+  it('should add new album', () => {
+    const albumTitle = 'My new album'
+    const action = store.dispatch(actions.addAlbum({title: albumTitle}))
+    expect(action.response.title).toEqual(albumTitle)
+    expect(action.type).toEqual('ADD_ALBUM_SUCCESS')
+  })
 })

@@ -47,19 +47,19 @@ export const fetchAlbums = (): ThunkAction => (dispatch, getStore) => {
     .catch(ex => dispatch(fetchAlbumsException(ex)))
 }
 
-export const toggleAddAlbumForm = (display: boolean) => { 
+export const toggleAddAlbumForm: ActionCreator = (display: boolean) => { 
   return {
-    type: 'TOGGLE_ADD_ALBUM_FORM',
+    type: 'TOOGLE_ADD_ALBUM_FORM',
     display,    
   }
 }
 
-export const addAlbum = (props: { title: string }): ThunkAction => (dispatch, getState)  => {
-  const newAlbum = { id: v4(), title: props.title }
-  
-  dispatch({
+export const addAlbum: ActionCreator = ({ title }: { title: string }) => {
+  const newAlbum = { id: v4(), title: title }
+
+  return {
     type: 'ADD_ALBUM_SUCCESS',
     response: newAlbum,
-    successMessage: 'Album har lagts till'
-  })
+    successMessage: 'Album has been added'
+  }
 }

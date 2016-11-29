@@ -14,5 +14,5 @@ export type Dispatch = (action: Action | ThunkAction | PromiseAction | Array<Act
 export type GetState = () => Object;
 export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
 export type PromiseAction = Promise<Action>;
-export type ActionCreator = () => Action
+export type ActionCreator = (params: any) => Action
 
